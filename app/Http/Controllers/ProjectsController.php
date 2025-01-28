@@ -6,6 +6,7 @@ use App\Http\Requests\ProjectsFormRequest;
 use App\Models\Project;
 use App\Repositories\ProjectRepository;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ProjectsController extends Controller
 {
@@ -14,12 +15,16 @@ class ProjectsController extends Controller
         $projects = Project::all();
         $mensagemSucesso = session('mensagem.sucesso');
 
-        return view('projects.index')->with('projects', $projects)->with('mensagemSucesso', $mensagemSucesso);
+        return Inertia::render('Projects/index', [
+            'projects' => $projects,
+            'mensagemSucesso' => $mensagemSucesso,
+            'Head'=> 'Dashboard',
+        ]);
     }
 
     public function create()
     {
-        return view('projects.create');
+        return Inertia::render('Projects/Create');
     }
 
     public function store(ProjectsFormRequest $request, ProjectRepository $projectsRepository)
@@ -39,7 +44,9 @@ class ProjectsController extends Controller
 
     public function edit(Project $project)
     {
-        return view('projects.edit')->with('projects', $project);
+        return Inertia::render('Projects/Edit', [
+            'project' => $project,
+        ]);
     }
 
     public function update(ProjectsFormRequest $request, Project $project)

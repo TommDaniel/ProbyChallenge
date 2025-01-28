@@ -51,7 +51,7 @@ export default function Welcome({
                                 <div className="flex flex-row gap-6">
                                     {auth.user ? (
                                         <Link
-                                            href={route('dashboard')}
+                                            href={route('projects.index')}
                                             className=" mt-4 rounded-md bg-[#FF2D20] px-6 py-3 text-sm font-medium text-white shadow-sm transition duration-300 hover:scale-105 hover:bg-[#E3241A] focus:outline-none focus:ring-2 focus:ring-[#FF2D20] focus:ring-offset-2 dark:hover:bg-[#D31E19]"
                                         >
                                             Dashboard
