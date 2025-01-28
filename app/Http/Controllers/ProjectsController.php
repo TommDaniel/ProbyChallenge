@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
+use App\Repositories\ProjectRepository;
 use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
 {
     public function index(Request $request)
     {
-        $projects = Projects::all();
+        $projects = Project::all();
         $mensagemSucesso = session('mensagem.sucesso');
 
         return view('projects.index')->with('projects', $projects)->with('mensagemSucesso', $mensagemSucesso);
@@ -19,30 +21,30 @@ class ProjectsController extends Controller
         return view('projects.create');
     }
 
-    public function store(ProjectsFormRequest $request, ProjectsRepository $projectsRepository)
+    public function store(ProjectsFormRequest $request, ProjectRepository $projectsRepository)
     {
-        $projects = $projectsRepository->addProjects($request);
+        $project = $projectsRepository->addProject($request);
 
 
-        return to_route('projects.index')->with('mensagem.sucesso', "Projeto '{$projects->name}' cadastrado com sucesso!");
+        return to_route('projects.index')->with('mensagem.sucesso', "Projeto '{$project->name}' cadastrado com sucesso!");
     }
 
-    public function destroy(Projects $projects)
+    public function destroy(Project $project)
     {
-        $projects->delete();
+        $project->delete();
 
-        return to_route('projects.index')->with('mensagem.sucesso', "Projeto '{$projects->name}' removido com sucesso!");
+        return to_route('projects.index')->with('mensagem.sucesso', "Projeto '{$project->name}' removido com sucesso!");
     }
 
-    public function edit(Projects $projects)
+    public function edit(Project $project)
     {
-        return view('projects.edit')->with('projects', $projects);
+        return view('projects.edit')->with('projects', $project);
     }
 
-    public function update(ProjectsFormRequest $request, Projects $projects)
+    public function update(ProjectsFormRequest $request, Project $project)
     {
-        $projects->update($request->all());
+        $project->update($request->all());
 
-        return to_route('projects.index')->with('mensagem.sucesso', "Projeto '{$projects->name}' atualizado com sucesso!");
+        return to_route('projects.index')->with('mensagem.sucesso', "Projeto '{$project->name}' atualizado com sucesso!");
     }
 }
