@@ -12,13 +12,32 @@ class ProjectsController extends Controller
 {
     public function index(Request $request)
     {
-        $projects = Project::all();
+        # $projects = Project::all();
+        $projects = [
+            [
+                'id' => 1,
+                'name' => 'Projeto 1',
+                'description' => 'Descrição do projeto 1',
+                'date' => '2021-10-01',
+            ],
+            [
+                'id' => 2,
+                'name' => 'Projeto 2',
+                'description' => 'Descrição do projeto 2',
+                'date' => '2021-10-01',
+            ],
+            [
+                'id' => 3,
+                'name' => 'Projeto 3',
+                'description' => 'Descrição do projeto 3',
+                'date' => '2021-10-01',
+            ],
+        ];
         $mensagemSucesso = session('mensagem.sucesso');
 
-        return Inertia::render('Projects/index', [
-            'projects' => $projects,
-            'mensagemSucesso' => $mensagemSucesso,
-            'Head'=> 'Dashboard',
+        return Inertia::render('Projects/Index', [
+            'projects' => $projects ?? [],
+            'mensagemSucesso' => $mensagemSucesso ?? ''
         ]);
     }
 
@@ -30,7 +49,6 @@ class ProjectsController extends Controller
     public function store(ProjectsFormRequest $request, ProjectRepository $projectsRepository)
     {
         $project = $projectsRepository->addProject($request);
-
 
         return to_route('projects.index')->with('mensagem.sucesso', "Projeto '{$project->name}' cadastrado com sucesso!");
     }

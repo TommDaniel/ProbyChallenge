@@ -12,3 +12,14 @@ export type PageProps<
         user: User;
     };
 };
+export type Project = {
+    id: number;
+    name: string;
+    description: string;
+    date: string;
+};
+
+export type ProjectsPageProps = PageProps<{
+    projects: Project[];
+    mensagemSucesso?: string;
+}>;
