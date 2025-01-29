@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    protected $table = 'projects';
     protected $fillable = [
         'name',
         'description',
@@ -16,4 +15,5 @@ class Project extends Model
     protected $casts = [
         'start_date' => 'date',
     ];
+
 }

@@ -58,6 +58,5 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
-    Route::get('/projects', [ProjectsController::class, 'index'])
-        ->name('projects.index');
+    Route::resource('projects', ProjectsController::class)->except('show');
 });

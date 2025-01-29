@@ -26,7 +26,7 @@ export default function Dashboard() {
     const handleDelete = (projectId: number, projectName: string) => {
         if (confirm(`Deseja realmente excluir o projeto "${projectName}"?`)) {
             // Use a rota nomeada ou a URL conforme seu Laravel
-            destroy(`/Projects/${projectId}`);
+            destroy(route('projects.destroy'));
         }
     };
 
@@ -50,7 +50,7 @@ export default function Dashboard() {
                         </h1>
 
                         <Link
-                            href="/Projects/create"
+                            href={route('projects.create')}
                             className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-full
                                        transition-transform duration-150 hover:scale-110"
                         >
@@ -102,7 +102,7 @@ export default function Dashboard() {
 
                                             {/* Editar (Link) */}
                                             <Link
-                                                href={`/Projects/${project.id}/edit`}
+                                                href={route('projects.edit', project.id)}
                                                 title="Editar Projeto"
                                                 className="text-gray-600 hover:text-blue-600 dark:text-gray-300
                                                            dark:hover:text-blue-400 transition-colors duration-200"
@@ -140,7 +140,7 @@ export default function Dashboard() {
                                             </p>
                                             <p>
                                                 <span className="font-medium">Data de início:</span>{' '}
-                                                {project.date}
+                                                {project.start_date.split('T')[0]}
                                             </p>
                                             <p>
                                                 <span className="font-medium">Status:</span>{' '}
