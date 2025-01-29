@@ -15,8 +15,9 @@ export type PageProps<
 export type Project = {
     id: number;
     name: string;
-    description: string;
+    description?: string;
     date: string;
+    status: 'Pendente' | 'Em Andamento' | 'Concluído';
 };
 
 export type ProjectsPageProps = PageProps<{
