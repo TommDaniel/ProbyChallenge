@@ -1,11 +1,41 @@
 import {PageProps} from '@/types';
 import {Head, Link} from '@inertiajs/react';
+import {useEffect, useState} from 'react';
+
+/** Ícones do MUI para ilustrar o toggle entre claro/escuro */
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
 
 export default function Welcome({
                                     auth,
                                     laravelVersion,
                                     phpVersion,
                                 }: PageProps<{ laravelVersion: string; phpVersion: string }>) {
+    // Estado que guarda o tema atual
+    const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+        // Ler do localStorage para manter a preferência
+        if (typeof window !== 'undefined') {
+            return localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
+        }
+        return 'light';
+    });
+
+    // useEffect para aplicar a classe .dark no <html> ao alterar o tema
+    useEffect(() => {
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        }
+    }, [theme]);
+
+    // Função para alternar o tema
+    const toggleTheme = () => {
+        setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+    };
+
     return (
         <>
             <Head title="Welcome"/>
@@ -32,17 +62,44 @@ export default function Welcome({
                                     />
                                 </svg>
                             </div>
+
+                            {/* Botão de dark mode (fica na 3ª coluna em telas grandes) */}
+                            <div className="flex justify-end gap-2 col-span-1 lg:col-start-3">
+                                <button
+                                    onClick={toggleTheme}
+                                    className="p-4 inline-flex items-center rounded-md border border-transparent bg-white
+                                           shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-gray-200 transition
+                                           duration-300 hover:ring-gray-300 focus:outline-none focus-visible:ring-[#FF2D20]
+                                         dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:ring-zinc-700
+                                           dark:focus-visible:ring-[#FF2D20]"
+                                >
+                                    {theme === 'dark' ? (
+                                        <>
+                                            <LightModeIcon className="mr-2"/>
+                                            Light Mode
+                                        </>
+                                    ) : (
+                                        <>
+                                            <DarkModeIcon className="mr-2"/>
+                                            Dark Mode
+                                        </>
+                                    )}
+                                </button>
+                            </div>
                         </header>
 
                         <main className="mt-6">
-
                             <div
-                                className="flex flex-col items-center gap-6 rounded-lg bg-white p-8 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-gray-200 transition duration-300 hover:ring-gray-300 focus:outline-none focus-visible:ring-[#FF2D20] md:p-12 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
+                                className="flex flex-col items-center gap-6 rounded-lg bg-white p-8
+                                           shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-gray-200 transition
+                                           duration-300 hover:ring-gray-300 focus:outline-none focus-visible:ring-[#FF2D20]
+                                           md:p-12 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:ring-zinc-700
+                                           dark:focus-visible:ring-[#FF2D20]"
                             >
                                 <h1 className="text-2xl font-bold text-black dark:text-white md:text-3xl">
                                     Bem-vindo ao Gerenciador de Projetos!
                                 </h1>
-                                <p className="text-gray-600 text-center dark:text-gray-400 md:text-lg">
+                                <p className="text-center text-gray-600 dark:text-gray-400 md:text-lg">
                                     Gerencie seus projetos de forma eficiente e mantenha o controle das suas tarefas com
                                     nossa plataforma intuitiva.
                                     Acompanhe o progresso, atualize o status dos projetos e colabore com sua equipe como
@@ -52,7 +109,10 @@ export default function Welcome({
                                     {auth.user ? (
                                         <Link
                                             href={route('projects.index')}
-                                            className=" mt-4 rounded-md bg-[#FF2D20] px-6 py-3 text-sm font-medium text-white shadow-sm transition duration-300 hover:scale-105 hover:bg-[#E3241A] focus:outline-none focus:ring-2 focus:ring-[#FF2D20] focus:ring-offset-2 dark:hover:bg-[#D31E19]"
+                                            className="mt-4 rounded-md bg-[#FF2D20] px-6 py-3 text-sm font-medium
+                                                       text-white shadow-sm transition duration-300 hover:scale-105
+                                                       hover:bg-[#E3241A] focus:outline-none focus:ring-2
+                                                       focus:ring-[#FF2D20] focus:ring-offset-2 dark:hover:bg-[#D31E19]"
                                         >
                                             Dashboard
                                         </Link>
@@ -60,13 +120,19 @@ export default function Welcome({
                                         <>
                                             <Link
                                                 href={route('login')}
-                                                className="mt-4 rounded-md bg-[#FF2D20] px-6 py-3 text-sm font-medium text-white shadow-sm transition duration-300 hover:scale-105 hover:bg-[#E3241A] focus:outline-none focus:ring-2 focus:ring-[#FF2D20] focus:ring-offset-2 dark:hover:bg-[#D31E19]"
+                                                className="mt-4 rounded-md bg-[#FF2D20] px-6 py-3 text-sm font-medium
+                                                           text-white shadow-sm transition duration-300 hover:scale-105
+                                                           hover:bg-[#E3241A] focus:outline-none focus:ring-2
+                                                           focus:ring-[#FF2D20] focus:ring-offset-2 dark:hover:bg-[#D31E19]"
                                             >
                                                 Log in
                                             </Link>
                                             <Link
                                                 href={route('register')}
-                                                className="mt-4 rounded-md bg-[#FF2D20] px-6 py-3 text-sm font-medium text-white shadow-sm transition duration-300 hover:scale-105 hover:bg-[#E3241A] focus:outline-none focus:ring-2 focus:ring-[#FF2D20] focus:ring-offset-2 dark:hover:bg-[#D31E19]"
+                                                className="mt-4 rounded-md bg-[#FF2D20] px-6 py-3 text-sm font-medium
+                                                           text-white shadow-sm transition duration-300 hover:scale-105
+                                                           hover:bg-[#E3241A] focus:outline-none focus:ring-2
+                                                           focus:ring-[#FF2D20] focus:ring-offset-2 dark:hover:bg-[#D31E19]"
                                             >
                                                 Register
                                             </Link>

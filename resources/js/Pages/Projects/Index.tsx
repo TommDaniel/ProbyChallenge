@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import {Head, Link, useForm, usePage} from '@inertiajs/react';
-import {ProjectsPageProps} from '@/types';
-import {useState} from 'react';
+import { Head, Link, usePage, useForm } from '@inertiajs/react';
+import { ProjectsPageProps } from '@/types';
+import { useState } from 'react';
 
 /** Ícones do MUI (apenas para os ícones, sem estilização do Material UI) */
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -9,13 +9,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function Dashboard() {
-    const {projects, mensagemSucesso} = usePage<ProjectsPageProps>().props;
+    const { projects, mensagemSucesso } = usePage<ProjectsPageProps>().props;
 
     // Controla qual projeto terá os detalhes exibidos
     const [expandedProjectId, setExpandedProjectId] = useState<number | null>(null);
 
     // Form para exclusão de projetos
-    const {delete: destroy} = useForm();
+    const { delete: destroy } = useForm();
 
     // Alterna o projeto cujo detalhes serão exibidos
     const toggleProjectDetails = (projectId: number) => {
@@ -32,7 +32,7 @@ export default function Dashboard() {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Dashboard"/>
+            <Head title="Dashboard" />
 
             <div className="p-4">
                 {/* Alerta de sucesso */}
@@ -50,7 +50,7 @@ export default function Dashboard() {
                         </h1>
 
                         <Link
-                            href={route('projects.create')}
+                            href="/Projects/create"
                             className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-full
                                        transition-transform duration-150 hover:scale-110"
                         >
@@ -66,7 +66,7 @@ export default function Dashboard() {
                                     key={project.id}
                                     className="
                                         bg-gray-50 dark:bg-gray-700
-                                        border border-solid border-gray-200 dark:border-gray-600
+                                        border border-gray-200 dark:border-gray-600
                                         rounded-lg shadow-sm p-4
                                         hover:shadow-md transition-shadow duration-200
                                         hover:bg-gray-100 dark:hover:bg-gray-600
@@ -102,12 +102,12 @@ export default function Dashboard() {
 
                                             {/* Editar (Link) */}
                                             <Link
-                                                href={route('projects.edit', project.id)}
+                                                href={`/Projects/${project.id}/edit`}
                                                 title="Editar Projeto"
                                                 className="text-gray-600 hover:text-blue-600 dark:text-gray-300
                                                            dark:hover:text-blue-400 transition-colors duration-200"
                                             >
-                                                <EditIcon/>
+                                                <EditIcon />
                                             </Link>
 
                                             {/* Excluir (action) */}
@@ -117,7 +117,7 @@ export default function Dashboard() {
                                                 className="text-gray-600 hover:text-red-600 dark:text-gray-300
                                                            dark:hover:text-red-400 transition-colors duration-200"
                                             >
-                                                <DeleteIcon/>
+                                                <DeleteIcon />
                                             </button>
                                         </div>
                                     </div>
