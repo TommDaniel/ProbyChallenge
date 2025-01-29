@@ -62,7 +62,7 @@ export default function ProjectForm({title, handleSubmit, data, setData, errors}
                             type="date"
                             variant="outlined"
                             fullWidth
-                            value={data.start_date.toString().split('T')[0]}
+                            value={data.start_date}
                             onChange={(e) => setData('start_date', e.target.value)}
                             InputLabelProps={{
                                 shrink: true,

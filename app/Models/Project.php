@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
@@ -15,5 +16,9 @@ class Project extends Model
     protected $casts = [
         'start_date' => 'date',
     ];
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d');
+    }
 
 }

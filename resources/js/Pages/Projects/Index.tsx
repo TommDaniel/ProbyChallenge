@@ -1,9 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, usePage, useForm } from '@inertiajs/react';
 import { ProjectsPageProps } from '@/types';
-import { useState } from 'react';
-
-/** Ícones do MUI (apenas para os ícones, sem estilização do Material UI) */
+import {useEffect, useState} from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -17,6 +15,16 @@ export default function Dashboard() {
     // Form para exclusão de projetos
     const { delete: destroy } = useForm();
 
+    //Controla a exibição da mensagem
+    const [showSuccessMessage, setShowSuccessMessage] = useState(!!mensagemSucesso);
+
+    useEffect(() => {
+        if (mensagemSucesso) {
+            const timer = setTimeout(() => setShowSuccessMessage(false), 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [mensagemSucesso]);
+
     // Alterna o projeto cujo detalhes serão exibidos
     const toggleProjectDetails = (projectId: number) => {
         setExpandedProjectId(current => (current === projectId ? null : projectId));
@@ -25,7 +33,7 @@ export default function Dashboard() {
     // Lógica de exclusão
     const handleDelete = (projectId: number, projectName: string) => {
         if (confirm(`Deseja realmente excluir o projeto "${projectName}"?`)) {
-            // Use a rota nomeada ou a URL conforme seu Laravel
+
             destroy(route('projects.destroy', projectId));
         }
     };
@@ -36,8 +44,12 @@ export default function Dashboard() {
 
             <div className="p-4">
                 {/* Alerta de sucesso */}
-                {mensagemSucesso && (
-                    <div className="mb-4 border border-green-300 bg-green-50 text-green-700 p-3 rounded">
+                {showSuccessMessage && (
+                    <div
+                        className={`mb-4 border border-green-300 bg-green-50 text-green-700 p-3 rounded
+                                    transition-opacity duration-1000 ease-out ${showSuccessMessage ? 'opacity-100' : 'opacity-0'}
+                        `}
+                    >
                         {mensagemSucesso}
                     </div>
                 )}
@@ -140,7 +152,7 @@ export default function Dashboard() {
                                             </p>
                                             <p>
                                                 <span className="font-medium">Data de início:</span>{' '}
-                                                {project.start_date.toString().split('T')[0]}
+                                                {project.start_date}
                                             </p>
                                             <p>
                                                 <span className="font-medium">Status:</span>{' '}
