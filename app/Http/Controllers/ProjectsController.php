@@ -5,18 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProjectsFormRequest;
 use App\Models\Project;
 use App\Repositories\ProjectRepository;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ProjectsController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $projects = Project::all();
 
         $mensagemSucesso = session('mensagem.sucesso');
 
-        return Inertia::render('projects/index', [
+        return Inertia::render('Projects/Index', [
             'projects' => $projects ?? [],
             'mensagemSucesso' => $mensagemSucesso ?? ''
         ]);
@@ -24,7 +23,7 @@ class ProjectsController extends Controller
 
     public function create()
     {
-        return Inertia::render('projects/create');
+        return Inertia::render('Projects/Create');
     }
 
     public function store(ProjectsFormRequest $request, ProjectRepository $projectsRepository)
@@ -44,7 +43,7 @@ class ProjectsController extends Controller
 
     public function edit(Project $project)
     {
-        return Inertia::render('projects/Edit', [
+        return Inertia::render('Projects/Edit', [
             'project' => $project,
         ]);
     }

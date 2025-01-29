@@ -16,7 +16,7 @@ export type Project = {
     id: number;
     name: string;
     description?: string;
-    start_date: String;
+    start_date: Date;
     status: 'Pendente' | 'Em Andamento' | 'Concluído';
 };
 

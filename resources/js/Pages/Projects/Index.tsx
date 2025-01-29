@@ -26,7 +26,7 @@ export default function Dashboard() {
     const handleDelete = (projectId: number, projectName: string) => {
         if (confirm(`Deseja realmente excluir o projeto "${projectName}"?`)) {
             // Use a rota nomeada ou a URL conforme seu Laravel
-            destroy(route('projects.destroy'));
+            destroy(route('projects.destroy', projectId));
         }
     };
 
@@ -140,7 +140,7 @@ export default function Dashboard() {
                                             </p>
                                             <p>
                                                 <span className="font-medium">Data de início:</span>{' '}
-                                                {project.start_date.split('T')[0]}
+                                                {project.start_date.toString().split('T')[0]}
                                             </p>
                                             <p>
                                                 <span className="font-medium">Status:</span>{' '}
