@@ -164,6 +164,9 @@ fi
 # Instala o Composer se necessário
 install_composer
 
+# Instala dependências do Composer
+composer_install
+
 # Instala o Node.js se necessário
 if command_exists node && command_exists npm; then
     echo "Node.js e npm já estão instalados."
@@ -176,9 +179,6 @@ install_laravel_installer
 
 # Descriptografa o arquivo .env
 decrypt_env
-
-# Instala dependências do Composer
-composer_install
 
 # Instala dependências do npm e constrói os ativos
 install_npm
