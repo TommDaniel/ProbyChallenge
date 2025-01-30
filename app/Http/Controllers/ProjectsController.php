@@ -11,13 +11,15 @@ class ProjectsController extends Controller
 {
     public function index()
     {
-        $projects = Project::all();
+        $projects = Project::paginate(5);
+
+        $projects->withPath('/projects');
 
         $mensagemSucesso = session('mensagem.sucesso');
 
         return Inertia::render('Projects/Index', [
-            'projects' => $projects ?? [],
-            'mensagemSucesso' => $mensagemSucesso ?? ''
+            'projects' => $projects,
+            'mensagemSucesso' => $mensagemSucesso,
         ]);
     }
 

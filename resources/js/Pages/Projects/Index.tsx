@@ -1,19 +1,21 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, usePage, useForm } from '@inertiajs/react';
-import { ProjectsPageProps } from '@/types';
+import {Head, Link, useForm, usePage} from '@inertiajs/react';
+import {ProjectsPageProps} from '@/types';
 import {useEffect, useState} from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Pagination from "../../Components/Pagination";
+import { Inertia } from '@inertiajs/inertia';
 
 export default function Dashboard() {
-    const { projects, mensagemSucesso } = usePage<ProjectsPageProps>().props;
+    const {projects, mensagemSucesso} = usePage<ProjectsPageProps>().props;
 
     // Controla qual projeto terá os detalhes exibidos
     const [expandedProjectId, setExpandedProjectId] = useState<number | null>(null);
 
     // Form para exclusão de projetos
-    const { delete: destroy } = useForm();
+    const {delete: destroy} = useForm();
 
     //Controla a exibição da mensagem
     const [showSuccessMessage, setShowSuccessMessage] = useState(!!mensagemSucesso);
@@ -38,9 +40,13 @@ export default function Dashboard() {
         }
     };
 
+    const handlePageChange = (page: number) => {
+        Inertia.get(route('projects.index'), { page }, { preserveState: true, preserveScroll: true });
+    };
+
     return (
         <AuthenticatedLayout>
-            <Head title="Dashboard" />
+            <Head title="Dashboard"/>
 
             <div className="p-4">
                 {/* Alerta de sucesso */}
@@ -71,9 +77,9 @@ export default function Dashboard() {
                     </div>
 
                     {/* Lista de Projetos */}
-                    {projects && projects.length > 0 ? (
+                    {projects.data && projects.data.length > 0 ? (
                         <ul className="space-y-4">
-                            {projects.map((project) => (
+                            {projects.data.map((project) => (
                                 <li
                                     key={project.id}
                                     className="
@@ -119,7 +125,7 @@ export default function Dashboard() {
                                                 className="text-gray-600 hover:text-blue-600 dark:text-gray-300
                                                            dark:hover:text-blue-400 transition-colors duration-200"
                                             >
-                                                <EditIcon />
+                                                <EditIcon/>
                                             </Link>
 
                                             {/* Excluir (action) */}
@@ -129,7 +135,7 @@ export default function Dashboard() {
                                                 className="text-gray-600 hover:text-red-600 dark:text-gray-300
                                                            dark:hover:text-red-400 transition-colors duration-200"
                                             >
-                                                <DeleteIcon />
+                                                <DeleteIcon/>
                                             </button>
                                         </div>
                                     </div>
@@ -168,6 +174,13 @@ export default function Dashboard() {
                             Nenhum projeto encontrado.
                         </p>
                     )}
+                </div>
+                <div className="w-full mt-4 flex justify-center dark:text-gray-200">
+                    <Pagination
+                        currentPage={projects.current_page}
+                        totalPages={projects.last_page}
+                        onPageChange={handlePageChange}
+                    />
                 </div>
             </div>
         </AuthenticatedLayout>
