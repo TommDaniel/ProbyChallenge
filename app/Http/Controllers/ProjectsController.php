@@ -2,47 +2,58 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\ProjectsFormRequest;
+use App\Models\Project;
+use App\Repositories\ProjectRepository;
+use Inertia\Inertia;
 
 class ProjectsController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $projects = Projects::all();
+        $projects = Project::paginate(5);
+
+        $projects->withPath('/projects');
+
         $mensagemSucesso = session('mensagem.sucesso');
 
-        return view('projects.index')->with('projects', $projects)->with('mensagemSucesso', $mensagemSucesso);
+        return Inertia::render('Projects/Index', [
+            'projects' => $projects,
+            'mensagemSucesso' => $mensagemSucesso,
+        ]);
     }
 
     public function create()
     {
-        return view('projects.create');
+        return Inertia::render('Projects/Create');
     }
 
-    public function store(ProjectsFormRequest $request, ProjectsRepository $projectsRepository)
+    public function store(ProjectsFormRequest $request, ProjectRepository $projectsRepository)
     {
-        $projects = $projectsRepository->addProjects($request);
 
+        $project = $projectsRepository->addProject($request);
 
-        return to_route('projects.index')->with('mensagem.sucesso', "Projeto '{$projects->name}' cadastrado com sucesso!");
+        return to_route('projects.index')->with('mensagem.sucesso', "Projeto '{$project->name}' cadastrado com sucesso!");
     }
 
-    public function destroy(Projects $projects)
+    public function destroy(Project $project)
     {
-        $projects->delete();
+        $project->delete();
 
-        return to_route('projects.index')->with('mensagem.sucesso', "Projeto '{$projects->name}' removido com sucesso!");
+        return to_route('projects.index')->with('mensagem.sucesso', "Projeto '{$project->name}' removido com sucesso!");
     }
 
-    public function edit(Projects $projects)
+    public function edit(Project $project)
     {
-        return view('projects.edit')->with('projects', $projects);
+        return Inertia::render('Projects/Edit', [
+            'project' => $project,
+        ]);
     }
 
-    public function update(ProjectsFormRequest $request, Projects $projects)
+    public function update(ProjectsFormRequest $request, Project $project)
     {
-        $projects->update($request->all());
+        $project->update($request->all());
 
-        return to_route('projects.index')->with('mensagem.sucesso', "Projeto '{$projects->name}' atualizado com sucesso!");
+        return to_route('projects.index')->with('mensagem.sucesso', "Projeto '{$project->name}' atualizado com sucesso!");
     }
 }
