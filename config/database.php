@@ -95,6 +95,10 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => 'prefer',
+            'options'   => [
+                PDO::ATTR_EMULATE_PREPARES => true, // Emular prepares no lado do cliente
+                PDO::ATTR_PERSISTENT => false,     // Desabilitar conexões persistentes
+            ],
         ],
 
         'sqlsrv' => [

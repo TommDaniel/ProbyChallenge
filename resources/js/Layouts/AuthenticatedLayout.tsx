@@ -100,7 +100,7 @@ export default function Authenticated({
                                         </Dropdown.Link>
 
                                         {/* Botão de Toggle do Dark Mode */}
-                                        <Dropdown.Link
+                                        <Dropdown.Link href='#'
                                             as="button"
                                             onClick={toggleTheme}
                                         >
@@ -185,7 +185,9 @@ export default function Authenticated({
                             </ResponsiveNavLink>
 
                             {/* Dark Mode no menu mobile */}
-                            <ResponsiveNavLink as="button" onClick={toggleTheme}>
+                            <ResponsiveNavLink
+                                href='#'
+                                as="button" onClick={toggleTheme}>
                                 {theme === 'dark' ? (
                                     <div className="flex items-center">
                                         <LightModeIcon className="mr-2" />
